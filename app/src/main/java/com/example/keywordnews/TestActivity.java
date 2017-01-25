@@ -7,9 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.jsoup.Jsoup;
@@ -21,6 +25,8 @@ import java.util.ArrayList;
 
 
 public class TestActivity extends AppCompatActivity {
+    private EditText mKeyWord;
+    private Button mSearchButton;
 
     private RecyclerView mRecyclerView;
     private RecyAdapter mAdapter;
@@ -38,6 +44,15 @@ public class TestActivity extends AppCompatActivity {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mKeyWord = (EditText)findViewById(R.id.search_key);
+        mSearchButton = (Button)findViewById(R.id.search_button);
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: 검색버튼 눌렸을때
+                Toast.makeText(getApplicationContext(), mKeyWord.getText(),Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.addItemDecoration(new CustomRecyclerDecoration(20));

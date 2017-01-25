@@ -16,6 +16,24 @@
         android:layout_height="?attr/actionBarSize">
     </android.support.v7.widget.Toolbar>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="269dp"
+            android:layout_height="match_parent"
+            android:hint="키워드를 입력하세요 "
+            android:id="@+id/search_key"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_button"
+            android:text="검색"/>
+
+        </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
