@@ -20,10 +20,10 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder>  {
         public TextView mTextView, mTitleView, mAuthorView, mCorView;
         public ViewHolder(View v) {
             super(v);
-            mTextView   = (TextView)v.findViewById(R.id.item);/*
+            mTextView   = (TextView)v.findViewById(R.id.item);
             mTitleView  = (TextView)v.findViewById(R.id.title);
-            mSubtitleView = (TextView)v.findViewById(R.id.subtitle);
-            mCorView = (TextView)v.findViewById(R.id.cor);*/
+           // mSubtitleView = (TextView)v.findViewById(R.id.subtitle);
+            //mCorView = (TextView)v.findViewById(R.id.cor);
             v.setOnClickListener(this);
         }
 
@@ -58,10 +58,10 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder>  {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(mDataset.get(position).getText());/*
+        holder.mTextView.setText(mDataset.get(position).getText());
         holder.mTitleView.setText(mDataset.get(position).getTitle());
-        holder.mSubtitleView.setText(mDataset.get(position).getAuthor());
-        holder.mCorView.setText(mDataset.get(position).getMyWord());*/
+        //holder.mSubtitleView.setText(mDataset.get(position).getAuthor());
+        //holder.mCorView.setText(mDataset.get(position).getMyWord());
     }
 
     public void updateDataset(ArrayList<RecyItem> dataset){

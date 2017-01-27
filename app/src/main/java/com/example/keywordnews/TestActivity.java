@@ -126,8 +126,8 @@ public class TestActivity extends AppCompatActivity {
             // 백그라운드로 구현할 것들
             try {
                 RSSReader reader = RSSReader.getInstance();
-                reader.setURL(new URL("http://imnews.imbc.com/rss/news/news_06.xml")); //mbc 연예 뉴스 rss 주소
-                reader.writeTitles(myDataset);
+                reader.setURL(new URL("http://fs.jtbc.joins.com//RSS/newsflash.xml")); //jtbc 속보 rss 주소
+                reader.writeNews(myDataset);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -200,7 +200,7 @@ class RSSReader {
         }
     }
 
-    public void writeTitles(ArrayList<RecyItem> a)
+    public void writeNews(ArrayList<RecyItem> a)
     {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -210,7 +210,7 @@ class RSSReader {
 
             for (int ii = 0; ii < items.getLength(); ii++) {
                 Element item = (Element)items.item(ii);
-                a.add(new RecyItem(getValue(item, "title")));
+                a.add(new RecyItem(getValue(item, "description"),getValue(item, "title"),"subtitle","cor",getValue(item, "link")));
             }
         } catch (Exception e) {
             e.printStackTrace();
