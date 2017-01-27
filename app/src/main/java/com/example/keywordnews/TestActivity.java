@@ -16,12 +16,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.util.ArrayList;
+
+import java.net.URL;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Document;
+
 
 
 public class TestActivity extends AppCompatActivity {
@@ -119,8 +124,16 @@ public class TestActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             // 백그라운드로 구현할 것들
-            for(int i=0; i<100; i++)
-                myDataset.add(new RecyItem(Integer.toString(i)));
+            try {
+                RSSReader reader = RSSReader.getInstance();
+                reader.setURL(new URL("http://imnews.imbc.com/rss/news/news_06.xml")); //mbc 연예 뉴스 rss 주소
+                reader.writeTitles(myDataset);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // for(int i=0; i<10; i++)
+            //     myDataset.add(new RecyItem(Integer.toString(i)+"asd"));
+
             publishProgress();
 
             return null;
@@ -148,3 +161,76 @@ public class TestActivity extends AppCompatActivity {
     }
 
 }
+
+class RSSReader {
+
+    private static RSSReader instance = null;
+
+    private URL rssURL;
+
+    private RSSReader() {}
+
+    public static RSSReader getInstance() {
+        if (instance == null)
+            instance = new RSSReader();
+        return instance;
+    }
+
+    public void setURL(URL url) {
+        rssURL = url;
+    }
+
+    public void writeFeed() //!!!!-----  콘솔창에 제목,내용,링크 순으로 뿌려줌 코드보면 암
+    {
+        try {
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = builder.parse(rssURL.openStream());
+
+            NodeList items = doc.getElementsByTagName("item");
+
+            for (int ii = 0; ii < items.getLength(); ii++) {
+                Element item = (Element)items.item(ii);
+                System.out.println(getValue(item, "title"));
+                System.out.println(getValue(item, "description"));
+                System.out.println(getValue(item, "link"));
+                System.out.println();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeTitles(ArrayList<RecyItem> a)
+    {
+        try {
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = builder.parse(rssURL.openStream());
+
+            NodeList items = doc.getElementsByTagName("item");
+
+            for (int ii = 0; ii < items.getLength(); ii++) {
+                Element item = (Element)items.item(ii);
+                a.add(new RecyItem(getValue(item, "title")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getValue(Element parent, String nodeName) {
+        return parent.getElementsByTagName(nodeName).item(0).getFirstChild().getNodeValue();
+    }
+/*
+    public static void main(String[] args) {
+        try {
+            RSSReader reader = RSSReader.getInstance();
+            reader.setURL(new URL("http://imnews.imbc.com/rss/news/news_06.xml"));
+            reader.writeFeed();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+*/
+
+}
+
