@@ -1,6 +1,5 @@
 package com.example.keywordnews;
 
-import android.content.Context;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +20,7 @@ import com.bumptech.glide.RequestManager;
 import com.example.keywordnews.model.NewsItem;
 
 import java.util.ArrayList;
-import java.net.URL;
-
 import io.realm.Realm;
-import io.realm.RealmResults;
-
 
 public class TestActivity extends AppCompatActivity {
     private EditText mKeyWord;
@@ -35,7 +31,7 @@ public class TestActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private RequestManager mImageRequestManager;
 
-    private RealmResults<NewsItem> myNewsset;
+    private ArrayList<NewsItem> keyNewsset;
 
     private Toolbar toolbar;
 
@@ -47,7 +43,6 @@ public class TestActivity extends AppCompatActivity {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Realm.init(getApplicationContext());
         mImageRequestManager = Glide.with(this);
         mKeyWord = (EditText)findViewById(R.id.search_key);
         mSearchButton = (Button)findViewById(R.id.search_button);
@@ -59,11 +54,14 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.addItemDecoration(new CustomRecyclerDecoration(20));
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new RecyAdapter(myNewsset, mImageRequestManager);
+        mAdapter = new RecyAdapter(keyNewsset, mImageRequestManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new RecyAdapter.OnItemClickListener() {
             @Override
@@ -72,12 +70,16 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
-        LoadNewsDataTask loadNewsDataTask = new LoadNewsDataTask();
-        loadNewsDataTask.execute();
+        String keyword = getIntent().getStringExtra("Key");
+        Log.d("MIM", keyword);
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        keyNewsset = new ArrayList<>(Realm.getDefaultInstance().where(NewsItem.class).contains("title", keyword).findAll());
+        mAdapter.notifyDataSetChanged();
+        mAdapter.updateDataset(keyNewsset);
+
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,43 +92,29 @@ public class TestActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.plus :
-                loadDB(); break;
+//                loadDB(); break;
             case R.id.minus :
-                clearDB(); break;
+//                clearDB(); break;
         }
         return true;
     }
-
-    //TODO : RSS로 뉴스정보 불러오기
-    private class LoadNewsDataTask extends AsyncTask<Void, Void, ArrayList<NewsItem>> {
+/*  //NOTE : RealmObject로의 접근은 Query를 만든 스레드에서만 이루어져야한다!
+    private class LoadNewsDataTask extends AsyncTask<String, Void, ArrayList<NewsItem>> {
         @Override
-        protected ArrayList<NewsItem> doInBackground(Void... params) {
-            ArrayList<NewsItem> NewsItems = new ArrayList<>();
-            // 백그라운드로 구현할 것들
-            try {
-                RSSReader reader = RSSReader.getInstance();
-                reader.setURL(new URL("http://www.chosun.com/site/data/rss/rss.xml")); //이미지 있는 rss 주소
-                return reader.LoadNewsData(NewsItems);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            //TODO : NewsItems 리턴하여 post에서 DB에 넣기
-
-            return null;
+        protected ArrayList<NewsItem> doInBackground(String... params) {
+            ArrayList<NewsItem> items = new ArrayList<>(Realm.getDefaultInstance().where(NewsItem.class).contains("title", params[0]).findAll());
+            return items;
         }
 
         @Override
         protected void onPostExecute(ArrayList<NewsItem> NewsItems) {
-            Realm realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            realm.insert(NewsItems);
-            realm.commitTransaction();
-
-            myNewsset = realm.where(NewsItem.class).findAll();
-            mAdapter.updateDataset(myNewsset);
-//            mAdapter.notifyDataSetChanged();
+            keyNewsset = NewsItems;
+            mAdapter.notifyDataSetChanged();
+            mAdapter.updateDataset(NewsItems);
         }
-    }
+    }*/
+
+
 
     public class CustomRecyclerDecoration extends RecyclerView.ItemDecoration {
         private final int divHeight;
@@ -143,25 +131,7 @@ public class TestActivity extends AppCompatActivity {
 
         }
     }
-    private void loadDB() {
-        myNewsset = Realm.getDefaultInstance().where(NewsItem.class).findAll();
-        Toast.makeText(this, String.valueOf(myNewsset != null ? myNewsset.size() : 0), Toast.LENGTH_SHORT).show();
-        mAdapter.notifyDataSetChanged();
-    }
 
-    private void clearDB() {
-        Realm realm = Realm.getDefaultInstance();
-        final RealmResults<NewsItem> results = realm.where(NewsItem.class).findAll();
-
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                results.deleteAllFromRealm();
-                loadDB();
-            }
-        });
-
-    }
 }
 
 

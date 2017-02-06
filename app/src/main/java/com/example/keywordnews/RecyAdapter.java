@@ -17,21 +17,24 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.keywordnews.Utils.CollectionUtils;
 import com.example.keywordnews.model.NewsItem;
 
+import java.util.ArrayList;
+
 import io.realm.RealmResults;
 
 /**
  * Created by 밈석 on 2017-01-23.
  */
 public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder>  {
-    private RealmResults<NewsItem> mNewsset;
+    private ArrayList<NewsItem> mNewsset;
     private RequestManager mImageRequestManager;
     static OnItemClickListener mOnItemClickListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView mTitleView, mSubtitleView, mCorView;
+        public TextView mCrpView, mTitleView, mSubtitleView, mCorView;
         public LinearLayout mItemLayout;
         public ViewHolder(View v) {
             super(v);
+            mCrpView = (TextView)v.findViewById(R.id.crp);
             mTitleView  = (TextView)v.findViewById(R.id.title);
             mSubtitleView = (TextView)v.findViewById(R.id.subtitle);
             mCorView = (TextView)v.findViewById(R.id.cor);
@@ -54,7 +57,7 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder>  {
         mOnItemClickListener = onItemClickListener;
     }
 
-    public RecyAdapter(RealmResults<NewsItem> newsset, RequestManager requestManager) {
+    public RecyAdapter(ArrayList<NewsItem> newsset, RequestManager requestManager) {
         mNewsset = newsset;
         mImageRequestManager = requestManager;
     }
@@ -70,6 +73,7 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder>  {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         NewsItem item = mNewsset.get(position);
+        holder.mCrpView.setText(item.getCrp());
         holder.mTitleView.setText(item.getTitle());
         holder.mSubtitleView.setText(item.getSubtitle());
         holder.mCorView.setText(item.getImageurl());
@@ -88,7 +92,7 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder>  {
     public int getItemCount() {
         return CollectionUtils.size(mNewsset);
     }
-    public void updateDataset(RealmResults<NewsItem> newsset){
+    public void updateDataset(ArrayList<NewsItem> newsset){
         mNewsset = newsset;
         notifyDataSetChanged();
     }

@@ -1,5 +1,7 @@
 package com.example.keywordnews;
 
+import android.util.Log;
+
 import com.example.keywordnews.model.NewsItem;
 
 import org.w3c.dom.Document;
@@ -18,9 +20,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class RSSReader {
     private static RSSReader instance = null;
 
-    private URL rssURL;
+    private ArrayList<URL> rssURLs;
 
-    private RSSReader() {}
+    private RSSReader() {
+        rssURLs = new ArrayList<>();
+    }
 
     public static RSSReader getInstance() {
         if (instance == null)
@@ -28,8 +32,8 @@ public class RSSReader {
         return instance;
     }
 
-    public void setURL(URL url) {
-        rssURL = url;
+    public void addURL(URL url) {
+        rssURLs.add(url);
     }
 
     public String getValue(Element parent, String nodeName) {
@@ -42,19 +46,26 @@ public class RSSReader {
         int idx1, idx2;
         idx1 = string.indexOf("\"");
         idx2 = string.indexOf("\"", idx1+1);
-        return string.substring(idx1+1, idx2);
+//        return string.substring(idx1+1, idx2);
+        return "IMG";
     }
 
     public ArrayList<NewsItem> LoadNewsData(ArrayList<NewsItem> Newsitems){
         try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.parse(rssURL.openStream());
+//            DocumentBuilder builder;
+//            Document doc;
+            String crp;
+            for(URL rssURL : rssURLs) {
+                DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                Document doc = builder.parse(rssURL.openStream());
+                crp = doc.getElementsByTagName("title").item(0).getFirstChild().getNodeValue();
+                NodeList items = doc.getElementsByTagName("item");
 
-            NodeList items = doc.getElementsByTagName("item");
-
-            for (int ii = 0; ii < items.getLength(); ii++) {
-                Element item = (Element)items.item(ii);
-                Newsitems.add(new NewsItem(getValue(item, "title"), getValue(item, "pubDate"), getImageUrl(item)));
+                for (int ii = 0; ii < items.getLength(); ii++) {
+                    Element item = (Element) items.item(ii);
+                    Newsitems.add(new NewsItem( crp, getValue(item, "title"), getValue(item, "link"), getImageUrl(item)));
+                }
+                Log.d("MIM", "RSS : " + rssURL.toString());
             }
 
         } catch (Exception e) {
