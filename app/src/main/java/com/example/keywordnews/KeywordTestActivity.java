@@ -108,14 +108,6 @@ public class KeywordTestActivity extends AppCompatActivity {
             // 백그라운드로 구현할 것들
             try {
                 RSSReader reader = RSSReader.getInstance();
-                // <국제>
-                reader.addURL(new URL("http://www.chosun.com/site/data/rss/international.xml")); //조선
-                reader.addURL(new URL("http://rss.nocutnews.co.kr/NocutGlobal.xml")); //노컷
-                reader.addURL(new URL("http://rss.donga.com/international.xml")); //동아
-                reader.addURL(new URL("http://rss.segye.com/segye_international.xml")); //세계
-                reader.addURL(new URL("http://file.mk.co.kr/news/rss/rss_30300018.xml")); //매일
-                reader.addURL(new URL("http://www.fnnews.com/rss/fn_realnews_international.xml")); //파이낸셜
-                reader.addURL(new URL("http://biz.heraldm.com/rss/010110000000.xml")); //헤럴드
                 return reader.LoadNewsData(NewsItems);
             } catch (Exception e) {
                 e.printStackTrace();

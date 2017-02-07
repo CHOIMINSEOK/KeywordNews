@@ -8,6 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -20,21 +21,32 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class RSSReader {
     private static RSSReader instance = null;
 
-    private ArrayList<URL> rssURLs;
+    private static ArrayList<URL> rssURLs;
 
     private RSSReader() {
         rssURLs = new ArrayList<>();
     }
 
     public static RSSReader getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new RSSReader();
+            try {
+                // <국제>
+                rssURLs.add(new URL("http://www.chosun.com/site/data/rss/international.xml")); //조선
+                rssURLs.add(new URL("http://rss.nocutnews.co.kr/NocutGlobal.xml")); //노컷
+                rssURLs.add(new URL("http://rss.donga.com/international.xml")); //동아
+                rssURLs.add(new URL("http://rss.segye.com/segye_international.xml")); //세계
+                rssURLs.add(new URL("http://file.mk.co.kr/news/rss/rss_30300018.xml")); //매일
+                rssURLs.add(new URL("http://www.fnnews.com/rss/fn_realnews_international.xml")); //파이낸셜
+                rssURLs.add(new URL("http://biz.heraldm.com/rss/010110000000.xml")); //헤럴드
+            } catch(MalformedURLException e){
+                Log.d("MIM", "RSSReader getInstance() MalformedURL ");
+
+            }
+        }
         return instance;
     }
 
-    public void addURL(URL url) {
-        rssURLs.add(url);
-    }
 
     public String getValue(Element parent, String nodeName) {
         return parent.getElementsByTagName(nodeName).item(0).getFirstChild().getNodeValue();
