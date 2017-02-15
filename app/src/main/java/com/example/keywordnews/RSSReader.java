@@ -6,6 +6,7 @@ import com.example.keywordnews.model.NewsItem;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.net.MalformedURLException;
@@ -20,7 +21,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class RSSReader {
     private static RSSReader instance = null;
-
+//TODO: rss 피드들을 해쉬맵을 통해 String으로 접근할 수 있게 하면 좋을듯.
     private static ArrayList<URL> rssURLs;
 
     private RSSReader() {
@@ -47,9 +48,19 @@ public class RSSReader {
         return instance;
     }
 
-
     public String getValue(Element parent, String nodeName) {
         return parent.getElementsByTagName(nodeName).item(0).getFirstChild().getNodeValue();
+    }
+
+    public String getDate(Element parent){
+//        각 언론사의 피드마다 날짜 태그가 다름 -_-;;
+        Node formDCdate = parent.getElementsByTagName("dc:date").item(0);
+        Node formPUBdate = parent.getElementsByTagName("pubDate").item(0);
+        Node formATOM   = parent.getElementsByTagName("atom:published").item(0);
+
+        Node date = (formDCdate != null ? formDCdate : (formPUBdate != null) ? formPUBdate : formATOM);
+
+        return date.getFirstChild().getNodeValue();
     }
 
     public String getImageUrl(Element parent){
@@ -76,6 +87,7 @@ public class RSSReader {
                 for (int ii = 0; ii < items.getLength(); ii++) {
                     Element item = (Element) items.item(ii);
                     Newsitems.add(new NewsItem( crp, getValue(item, "title"), getValue(item, "link"), getImageUrl(item)));
+                    Log.d("MIM", "date : " + getDate(item));
                 }
                 Log.d("MIM", "RSS : " + rssURL.toString());
             }

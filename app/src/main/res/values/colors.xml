@@ -3,4 +3,16 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="pastelGreen">#31ff00</color>
+    <color name="pastelDeepGreen">#228B22</color>
+    <color name="pastelBlue">#4affff</color>
+    <color name="pastelDeepBlue">#0078ff</color>
+    <color name="pastelRed">#FF46C5</color>
+    <color name="pastelDeepRed">#FF5675</color>
+    <color name="pastelYellow">#FFF56E</color>
+    <color name="pastelDeepYellow">#D2691E</color>
+    <color name="pastelViolet">#68269A</color>
+
+
+
 </resources>

@@ -8,6 +8,8 @@ import io.realm.annotations.PrimaryKey;
  */
 public class NewsItem extends RealmObject {
     String crp; // 언론사이름
+//    String category; TODO : 관계형으로 참조할 수 있도록 DB구조 개선
+//    String pubDate; TODO : 어떻게 int로 바꿔야하나
     @PrimaryKey
     String title;
     String subtitle;
