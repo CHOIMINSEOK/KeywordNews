@@ -75,8 +75,8 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder>  {
         NewsItem item = mNewsset.get(position);
         holder.mCrpView.setText(item.getCrp());
         holder.mTitleView.setText(item.getTitle());
-        holder.mSubtitleView.setText(item.getSubtitle());
-        holder.mCorView.setText(item.getImageurl());
+        holder.mSubtitleView.setText(item.getLink());
+        /*holder.mCorView.setText(item.getImageurl());
         mImageRequestManager.load(item.getImageurl()).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -85,7 +85,7 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder>  {
                     holder.mItemLayout.setBackground(drawable);
                 }
             }
-        });
+        });*/
 
     }
     @Override

@@ -76,7 +76,15 @@ public class KeywordTestActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new CustomRecyAdapter();
+        mAdapter = new CustomRecyAdapter(mKeywords);
+        mAdapter.setOnItemClickListener(new CustomRecyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(), TestActivity.class);
+                intent.putExtra("Key",mKeywords.get(position).getKeyword());
+                startActivity(intent);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
         LoadNewsDataTask loadNewsDataTask = new LoadNewsDataTask();
@@ -100,32 +108,7 @@ public class KeywordTestActivity extends AppCompatActivity {
         }
         return true;
     }
-    //TODO : RSS로 뉴스정보 불러오기
-    private class LoadNewsDataTask extends AsyncTask<Void, Void, ArrayList<NewsItem>> {
-        @Override
-        protected ArrayList<NewsItem> doInBackground(Void... params) {
-            ArrayList<NewsItem> NewsItems = new ArrayList<>();
-            // 백그라운드로 구현할 것들
-            try {
-                RSSReader reader = RSSReader.getInstance();
-                return reader.LoadNewsData(NewsItems);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            //TODO : NewsItems 리턴하여 post에서 DB에 넣기
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<NewsItem> NewsItems) {
-            Log.d("MiM", Integer.toString(NewsItems.size()));
-            Realm realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            realm.insertOrUpdate(NewsItems);
-            realm.commitTransaction();
-        }
-    }
 
     //TODO : 키워드뉴스 모으기!
     private class GetKeywordArticleTask extends AsyncTask<String, Void, RealmResults<NewsItem>> {
@@ -153,21 +136,7 @@ public class KeywordTestActivity extends AppCompatActivity {
         }
     }
 
-    public class CustomRecyclerDecoration extends RecyclerView.ItemDecoration {
-        private final int divHeight;
 
-        public CustomRecyclerDecoration(int divHeight) {
-            this.divHeight = divHeight;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-
-        outRect.top = divHeight;
-
-        }
-    }
     private void loadDB() {
         mAdapter.notifyDataSetChanged();
     }
@@ -186,53 +155,7 @@ public class KeywordTestActivity extends AppCompatActivity {
 
     }
 
-    public class CustomRecyAdapter extends RecyclerView.Adapter<CustomRecyAdapter.ViewHolder>  {
-        public class ViewHolder extends RecyclerView.ViewHolder{
-            public TextView mKeywordView;
-            public TextView mArticleNum;
-            public CardView mCardView;
-            public ViewHolder(View v) {
-                super(v);
-                mKeywordView = (TextView)v.findViewById(R.id.keyword);
-                mArticleNum = (TextView)v.findViewById(R.id.num);
-                mCardView = (CardView)v.findViewById(R.id.cardview);
-            }
-        }
-        public CustomRecyAdapter() {
-            super();
-        }
 
-        @Override
-        public CustomRecyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recy_keyword, parent, false);
-
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, final int position) {
-            KeywordArticles article = mKeywords.get(position);
-            holder.mKeywordView.setText(article.getKeyword());
-            holder.mArticleNum.setText("( "+Integer.toString(article.getNum())+" )");
-            holder.mCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), TestActivity.class);
-                    intent.putExtra("Key",mKeywords.get(position).getKeyword());
-                    startActivity(intent);
-                }
-            });
-        }
-        @Override
-        public int getItemCount() {
-            return mKeywords.size();
-        }
-        public void updateDataset(){
-            notifyDataSetChanged();
-        }
-
-    }
 }
 
 

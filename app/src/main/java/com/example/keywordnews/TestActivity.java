@@ -70,6 +70,7 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
+        //TODO : 키워드와 함께 카테고리도 전달받아서 필터한 후 날짜순으로 정렬하도록!
         String keyword = getIntent().getStringExtra("Key");
         Log.d("MIM", keyword);
 
