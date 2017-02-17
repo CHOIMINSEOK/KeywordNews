@@ -21,6 +21,7 @@
         <activity android:name=".TestActivity"/>
         <activity android:name=".KeywordTestActivity"/>
         <activity android:name=".HomeActivity"/>
+        <activity android:name=".Splash"/>
     </application>
 
 </manifest>

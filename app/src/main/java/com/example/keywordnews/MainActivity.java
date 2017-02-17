@@ -27,5 +27,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.test4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Splash.class);
+                startActivity(intent);
+            }
+        });
     }
 }
