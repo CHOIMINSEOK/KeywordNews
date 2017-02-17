@@ -1,5 +1,6 @@
 package com.example.keywordnews;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        startActivity(new Intent(this, Splash.class));
 
         Realm.init(getApplicationContext());
         new LoadNewsDataTask().execute();

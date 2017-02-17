@@ -15,5 +15,15 @@ public class Splash extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+
+        Handler handle = new Handler();
+
+        handle.postDelayed(new Runnable()
+        {
+            public void run()
+            {
+                finish();
+            }
+        },2000); //2초후 종료
     }
 }
