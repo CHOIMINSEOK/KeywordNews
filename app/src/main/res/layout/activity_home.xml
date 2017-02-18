@@ -26,24 +26,22 @@
             app:viewpager_transparentToolbar="true"
             app:viewpager_animatedHeaderImage="true"
             app:viewpager_disableToolbar="false" />
-        <LinearLayout
+        <RelativeLayout
             android:clickable="true"
             android:id="@+id/add_keyword_page"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
             android:background="#a9000000">
             <com.example.keywordnews.KeywordEditText
                 android:id="@+id/add_keyword_edittext"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:maxLines="1"
-                android:layout_marginTop="200dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
     </FrameLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

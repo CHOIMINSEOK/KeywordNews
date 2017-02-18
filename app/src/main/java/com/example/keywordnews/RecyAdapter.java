@@ -1,6 +1,7 @@
 package com.example.keywordnews;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -74,6 +75,7 @@ public class RecyAdapter extends RecyclerView.Adapter<RecyAdapter.ViewHolder>  {
     public void onBindViewHolder(final ViewHolder holder, int position) {
         NewsItem item = mNewsset.get(position);
         holder.mCrpView.setText(item.getCrp());
+        holder.mCrpView.setTextColor(DesignManager.getColor(item.getCrp()));
         holder.mTitleView.setText(item.getTitle());
         holder.mSubtitleView.setText(item.getLink());
         /*holder.mCorView.setText(item.getImageurl());

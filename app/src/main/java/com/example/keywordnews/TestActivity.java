@@ -1,5 +1,6 @@
 package com.example.keywordnews;
 
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.example.keywordnews.model.NewsItem;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import io.realm.Realm;
@@ -56,7 +58,13 @@ public class TestActivity extends AppCompatActivity {
 
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mRecyclerView.addItemDecoration(new CustomRecyclerDecoration(20));
+        mRecyclerView.addItemDecoration(
+                new HorizontalDividerItemDecoration.Builder(this)
+                        .color(Color.LTGRAY)
+                        .sizeResId(R.dimen.divider)
+                        .marginResId(R.dimen.leftmargin, R.dimen.rightmargin)
+                        .build());
+
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 

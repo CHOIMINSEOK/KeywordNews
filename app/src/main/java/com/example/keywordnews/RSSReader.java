@@ -14,6 +14,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -48,7 +49,7 @@ public class RSSReader {
                 rssURLs.add(new URL("http://file.mk.co.kr/news/rss/rss_30300018.xml")); //매일
                 rssURLs.add(new URL("http://www.fnnews.com/rss/fn_realnews_international.xml")); //파이낸셜
                 rssURLs.add(new URL("http://biz.heraldm.com/rss/010110000000.xml")); //헤럴드
-                rssURLSet.put("international", rssURLs);
+                rssURLSet.put("국제", rssURLs);
 
                 // <정치>
                 rssURLs = new ArrayList<>();
@@ -59,7 +60,7 @@ public class RSSReader {
                 rssURLs.add(new URL("http://file.mk.co.kr/news/rss/rss_30200030.xml")); //매일
                 rssURLs.add(new URL("http://www.fnnews.com/rss/fn_realnews_politics.xml")); //파이낸셜
                 rssURLs.add(new URL("http://biz.heraldm.com/rss/010108000000.xml")); //헤럴드
-                rssURLSet.put("politics", rssURLs);
+                rssURLSet.put("정치", rssURLs);
 
             } catch(MalformedURLException e){
                 Log.d("MIM", "RSSReader getInstance() MalformedURL ");
@@ -99,11 +100,14 @@ public class RSSReader {
 //            DocumentBuilder builder;
 //            Document doc;
             String crp;
+            ArrayList<String> crpList = DesignManager.getCorperations();
+
             for(String category : rssURLSet.keySet()) {
+                int i = 0;
                 for (URL rssURL : rssURLSet.get(category)) {
                     DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
                     Document doc = builder.parse(rssURL.openStream());
-                    crp = doc.getElementsByTagName("title").item(0).getFirstChild().getNodeValue();
+                    crp = crpList.get(i++);
                     NodeList items = doc.getElementsByTagName("item");
 
                     for (int ii = 0; ii < items.getLength(); ii++) {

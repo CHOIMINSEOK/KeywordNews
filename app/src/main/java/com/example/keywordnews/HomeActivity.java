@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.keywordnews.model.Category;
@@ -35,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<Category> categories = new ArrayList<>();
     private int currentPosition = 0;
 
-    private LinearLayout addKeywordPage;
+    private RelativeLayout addKeywordPage;
     private KeywordEditText keywordEditText;
     private boolean isAddPageOpened = false;
     @Override
@@ -48,8 +49,10 @@ public class HomeActivity extends AppCompatActivity {
         Realm.init(getApplicationContext());
         new LoadNewsDataTask().execute();
 
+        DesignManager.setContext(getApplicationContext());
+
         initCategorys();
-        addKeywordPage = (LinearLayout) findViewById(R.id.add_keyword_page);
+        addKeywordPage = (RelativeLayout) findViewById(R.id.add_keyword_page);
         keywordEditText = (KeywordEditText) findViewById(R.id.add_keyword_edittext);
         keywordEditText.setAddManager(new KeywordEditText.AddManager() {
             @Override
@@ -135,8 +138,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     void initCategorys(){
-        categories.add(new Category("international", R.color.green, getResources().getDrawable(R.drawable.trump)));
-        categories.add(new Category("politics", R.color.blue , getResources().getDrawable(R.drawable.lee)));
+        categories.add(new Category("국제", R.color.green, getResources().getDrawable(R.drawable.trump)));
+        categories.add(new Category("정치", R.color.blue , getResources().getDrawable(R.drawable.lee)));
     }
 
     private class GetKeywordArticleTask extends AsyncTask<String, Void, RealmResults<NewsItem>> {
