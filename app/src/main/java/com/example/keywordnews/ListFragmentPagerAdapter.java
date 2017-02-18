@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v7.widget.CardView;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -14,8 +12,6 @@ import java.util.List;
 
 public class ListFragmentPagerAdapter extends FragmentStatePagerAdapter {
     private List<ListFragment> mFragments;
-
-
 
     public ListFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -49,6 +45,8 @@ public class ListFragmentPagerAdapter extends FragmentStatePagerAdapter {
         mFragments.add(fragment);
     }
 
-
+    public ListFragment getFragment(int position){
+        return mFragments.get(position);
+    }
 
 }

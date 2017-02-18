@@ -14,7 +14,8 @@ import com.example.keywordnews.model.KeywordArticles;
 import java.util.ArrayList;
 
 public class CustomRecyAdapter extends RecyclerView.Adapter<CustomRecyAdapter.ViewHolder>  {
-    static OnItemClickListener mOnItemClickListener;
+    //TODO static이었을때.
+    public OnItemClickListener mOnItemClickListener;
     public ArrayList<KeywordArticles> mKeywords;
 
 

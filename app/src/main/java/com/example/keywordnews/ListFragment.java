@@ -49,6 +49,7 @@ public class ListFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
+
         mRecyclerView.addItemDecoration(new MaterialViewPagerHeaderDecorator());
 
         mAdapter = new CustomRecyAdapter(mContentItems);
@@ -79,9 +80,5 @@ public class ListFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-
-    public void setOnItemClickListener(CustomRecyAdapter.OnItemClickListener onItemClickListener){
-        mAdapter.setOnItemClickListener(onItemClickListener);
-    }
 }
 
